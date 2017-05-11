@@ -1,0 +1,217 @@
+
+if !has('nvim')
+    set nocompatible              " be iMproved
+endif
+
+let mapleader = ","
+
+" Use Pathogen to install plugins 
+execute pathogen#infect()
+call pathogen#helptags()
+
+if !has('nvim')
+    filetype off
+    runtime! plugin/sensible.vim
+    filetype plugin indent on
+    syntax on
+    set incsearch
+    set smarttab " Smarter tab levels
+    runtime ftplugin/man.vim
+    set laststatus=2
+    set backspace=indent,eol,start	" more powerful backspacing
+endif
+
+" The Neovim documentation *says* syntax is on by default, but
+" it doesn't seem to be for me.
+syntax on
+filetype plugin indent on
+
+" turn off highlight search
+nnoremap <silent> ,l :nohlsearch<CR>
+
+" Delete a buffer, saving the current window layout.
+nmap <silent> <leader>bd :bp\|bd #<CR>
+
+" mappings for the terminal
+if has('nvim')
+    tnoremap <A-e> <C-\><C-n>
+    tnoremap <A-h> <C-\><C-n><C-w>h
+    tnoremap <A-j> <C-\><C-n><C-w>j
+    tnoremap <A-k> <C-\><C-n><C-w>k
+    tnoremap <A-l> <C-\><C-n><C-w>l
+endif
+
+" Didn't like these, really.  Or maybe I do want them too.
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
+
+" Easier moving between windows
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-L> <C-W><C-L>
+
+" Tabs 
+nnoremap <silent> <F3> :tabprevious<CR>
+nnoremap <silent> <F4> :tabnext<CR>
+inoremap <silent> <F3> <ESC>:tabprevious<CR>
+inoremap <silent> <F4> <ESC>:tabnext<CR>
+
+if has('nvim')
+    tnoremap <silent> <F3> <C-\><C-n>:tabprevious<CR>
+    tnoremap <silent> <F4> <C-\><C-n>:tabnext<CR>
+endif
+
+" Buffers
+nnoremap <silent> <Tab> :bnext<CR>
+nnoremap <silent> <S-Tab> :bprevious<CR>
+
+
+"colorscheme solarized
+colorscheme molokai
+"colorscheme peachpuff
+"set background=light
+"set background=dark
+
+" Statusline set for fugitive (git status)
+"set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+
+" For vim-airline, display all buffers when only one tab is open
+let g:airline#extensions#tabline#enabled = 1
+" tell vim-airline to use the powerline font glyphs.
+let g:airline_powerline_fonts = 1
+set encoding=utf-8
+
+" CtrlP options
+let g:ctrlp_clear_cache_on_exit = 0
+nnoremap <leader>p :CtrlPBuffer<cr>
+
+" CtrlP Extensions
+let g:ctrlp_extensions = ['buffertag']
+						", 'quickfix', 'dir', 'rtscript',
+						" \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
+" Change default file listing command.  Hopefully faster.
+"let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'  " Windows
+" Tell ctrlp to set the language for filetype=plsql
+let g:ctrlp_buftag_types = {
+		\ 'plsql'	: '--language-force=SQL'
+	\ }
+
+" make the cursor stay in the middle of the screen.
+nnoremap <Leader>zz :let &scrolloff=999-&scrolloff<CR> 
+
+" Modeline
+set modeline
+set modelines=5
+
+set hidden " The current buffer can be put to the background without writing to disk
+
+" Do no auto-wrap text (i.e. code) using textwidth (does not apply to comments)
+set fo-=t
+set fo-=l
+set fo+=c
+set fo+=j
+set fo+=o
+
+set nowrap
+set textwidth=72
+set wildmode=longest,list " At command line, complete longest common string, then list alternatives.
+
+set tabstop=4    " Set the default tabstop
+set softtabstop=4
+set shiftwidth=4 " Set the default shift width for indents
+set expandtab   " Make tabs into spaces (set by tabstop)
+
+set showmatch  " Show matching brackets.
+set matchtime=5  " Bracket blinking.
+set novisualbell  " No blinking
+set noerrorbells  " No noise.
+set vb t_vb= " disable any beeps or flashes on error
+
+set nolist " Display unprintable characters f12 - switches
+set listchars=tab:·\ ,eol:¶,trail:·,extends:»,precedes:« " Unprintable chars mapping
+
+set foldenable " Turn on folding
+set foldmethod=marker " Fold on the marker
+set foldlevel=100 " Don't autofold anything (but I can still fold manually)
+set foldopen=block,hor,mark,percent,quickfix,tag " what movements open folds
+
+" Open the filename under the cursor.
+nnoremap gf :e <cfile><CR>
+
+" Split line(opposite to S-J joining line)
+" (Interferes with using <C-J> to change windows.
+nnoremap <silent> <leader>j gEa<CR><ESC> 
+
+" show/Hide hidden Chars
+map <silent> <F12> :set invlist<CR>     
+
+" Edit vimrc file.
+nnoremap <leader>ev :split $MYVIMRC<cr>
+" Source vimrc file
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" Copy the full path of the file being edited to the system clipboard.
+nnoremap <leader>cp :let @* = expand("%:p")<cr>
+
+" Make the current file's directory the current directory
+nnoremap <leader>cd :cd %:p:h<cr>
+
+set ssop-=options
+
+" Don't replace netrw functionality.
+"let g:NERDTreeHijackNetrw = 0
+"map <C-n> :NERDTreeToggle<cr>
+
+" Tagbar
+nnoremap <leader>t :TagbarToggle<cr>
+
+let g:tagbar_autofocus = 1
+
+let g:tagbar_type_plsql = {
+	\ 'ctagstype'	: 'SQL',
+    \ 'kinds' : [
+        \ 'P:packages:1',
+        \ 'd:prototypes',
+        \ 'c:cursors',
+        \ 'p:procedures',
+        \ 'f:functions',
+        \ 't:tables',
+        \ 'r:records:1',
+        \ 'F:record fields',
+        \ 'L:block label',
+        \ 's:subtypes',
+        \ 'T:triggers',
+        \ 'v:variables',
+        \ 'l:local variables:1',
+        \ 'i:indexes',
+        \ 'e:events',
+        \ 'U:publications',
+        \ 'R:services',
+        \ 'D:domains',
+        \ 'V:views',
+        \ 'n:synonyms',
+        \ 'x:MobiLink Table Scripts',
+        \ 'y:MobiLink Conn Scripts',
+        \ 'z:MobiLink Properties',
+    \ ],
+\ }
+
+" I haven't gotten this working yet, I think.
+" fugitive (git)
+function! GitAddCommitPush(message)
+        execute 'Gwrite'
+        execute 'Gcommit ' . a:message
+        execute 'Gpush'
+endfunction
+
+command! -nargs=1 Gwcp call GitAddCommitPush(<args>)
+
+" vim-markdown plugin
+let g:vim_markdown_toc_autofit = 1
+
+"cd ~/
+
+" vim:ft=vim
