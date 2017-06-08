@@ -1,0 +1,1 @@
+../other-repos/haskell-vim-proto/vim/syntax/cabal.vim
